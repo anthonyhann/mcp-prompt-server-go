@@ -105,11 +105,57 @@ Additionally, all prompt templates defined in the `src/prompts` directory are pr
 
 ### Cursor
 
-In Cursor, you can connect to this server via MCP and access all predefined prompt tools through the tools panel.
+In Cursor, you need to edit the MCP configuration file:
+
+1. Find or create Cursor's MCP configuration file (usually located in the `~/.cursor/` directory)
+2. Add the following content:
+
+```json
+{
+  "servers": [
+    {
+      "name": "Prompt Server",
+      "command": ["node", "/path/to/prompt-server/src/index.js"],
+      "transport": "stdio",
+      "initialization_options": {}
+    }
+  ]
+}
+```
+
+Make sure to replace `/path/to/prompt-server` with your actual project path.
+
+3. Save the configuration and restart the editor
+4. You should now be able to see all available prompt tools in the tools panel
 
 ### Windsurf
 
-In Windsurf, you can connect to this server via MCP and call predefined prompt tools through the tools panel or commands.
+In Windsurf, access the MCP configuration through:
+
+1. Navigate to Windsurf - Settings > Advanced Settings, or
+2. Use Command Palette > Open Windsurf Settings Page
+3. Scroll down to the Cascade section where you'll find options to add a new server
+4. Click the "Add Server" button, then select "Add custom server +"
+5. Alternatively, you can directly edit the `~/.codeium/windsurf/mcp_config.json` file, adding the following content:
+
+```json
+{
+  "mcpServers": {
+    "prompt-server": {
+      "command": "node",
+      "args": [
+        "/path/to/prompt-server/src/index.js"
+      ],
+      "transport": "stdio"
+    }
+  }
+}
+```
+
+Make sure to replace `/path/to/prompt-server` with your actual project path.
+
+6. After adding the server, click the refresh button
+7. You should now be able to see all available prompt tools in the tools panel
 
 ## Extension Suggestions
 
