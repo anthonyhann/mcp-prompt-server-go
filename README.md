@@ -107,11 +107,57 @@ messages:                        # prompt消息列表
 
 ### Cursor
 
-在Cursor中，您可以通过MCP连接到此服务器，然后通过工具面板访问所有预设的prompt工具。
+在Cursor中，您需要编辑MCP配置文件：
+
+1. 找到或创建Cursor的MCP配置文件（通常位于`~/.cursor/`目录）
+2. 添加以下内容：
+
+```json
+{
+  "servers": [
+    {
+      "name": "Prompt Server",
+      "command": ["node", "/path/to/prompt-server/src/index.js"],
+      "transport": "stdio",
+      "initialization_options": {}
+    }
+  ]
+}
+```
+
+请确保将`/path/to/prompt-server`替换为您实际的项目路径。
+
+3. 保存配置并重启编辑器
+4. 现在您应该能够在工具面板中看到所有可用的prompt工具
 
 ### Windsurf
 
-在Windsurf中，您可以通过MCP连接到此服务器，然后通过工具面板或命令调用预设的prompt工具。
+在Windsurf中，通过以下方式访问MCP配置：
+
+1. 导航至 Windsurf - 设置 > 高级设置，或
+2. 使用命令面板 > 打开Windsurf设置页面
+3. 滚动到Cascade部分，您会看到添加新服务器的选项
+4. 点击"添加服务器"按钮，然后选择"添加自定义服务器+"
+5. 或者，您可以直接编辑`~/.codeium/windsurf/mcp_config.json`文件，添加以下内容：
+
+```json
+{
+  "mcpServers": {
+    "prompt-server": {
+      "command": "node",
+      "args": [
+        "/path/to/prompt-server/src/index.js"
+      ],
+      "transport": "stdio"
+    }
+  }
+}
+```
+
+请确保将`/path/to/prompt-server`替换为您实际的项目路径。
+
+6. 添加服务器后，点击刷新按钮
+7. 现在您应该能够在工具面板中看到所有可用的prompt工具
 
 ## 扩展建议
 
