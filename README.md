@@ -59,6 +59,28 @@ mcp-prompt-server/
 
 ### 工具集成
 
+#### Raycast
+
+1. 在 Raycast 搜索 `install server（MCP）`
+
+   ![](https://img.t5t6.com/1747728547294-26c78178-6e42-4e02-a7f3-c9bd9cdbc1fe.png)
+
+2. 给MCP输入一个名字，建议简单点，方便以后@使用，比如叫 `prompt`
+3. Command 填写 `node`
+4. Argument 填写你的 `index.js` 路径地址
+
+   ![](https://img.t5t6.com/1747728622599-82551d14-937b-4e7c-9429-68d72b7036ce.png)
+
+5. 保存即可，Raycast会自动集成MCP Prompt Server。
+
+##### 注意事项
+- 未来新增Prompt，可以复制已有模版让AI参考生成YAML文件。
+- **模版中的 `arguments: []` 要么为空，要么参数设置为非必填（false），否则Raycast会报错。**
+- 如果报错，可以在Raycast中搜"manage server（MCP）"卸载后重装。
+- 每次新增Prompt，都需要卸载重装MCP，暂时没找到更优解。
+
+---
+
 #### Cursor
 
 - 编辑 `~/.cursor/mcp_config.json`，添加如下内容（请将路径替换为你实际的项目路径）：
@@ -97,26 +119,6 @@ mcp-prompt-server/
   ```
 
 - 刷新Windsurf设置，Prompt Server即刻生效。
-
-#### Raycast
-
-1. 在 Raycast 搜索 `install server（MCP）`
-
-   ![](https://img.t5t6.com/1747728547294-26c78178-6e42-4e02-a7f3-c9bd9cdbc1fe.png)
-
-2. 给MCP输入一个名字，建议简单点，方便以后@使用，比如叫 `prompt`
-3. Command 填写 `node`
-4. Argument 填写你的 `index.js` 路径地址
-
-   ![](https://img.t5t6.com/1747728622599-82551d14-937b-4e7c-9429-68d72b7036ce.png)
-
-5. 保存即可，Raycast会自动集成MCP Prompt Server。
-
-##### 注意事项
-- 未来新增Prompt，可以复制已有模版让AI参考生成YAML文件。
-- **模版中的 `arguments: []` 要么为空，要么参数设置为非必填（false），否则Raycast会报错。**
-- 如果报错，可以在Raycast中搜"manage server（MCP）"卸载后重装。
-- 每次新增Prompt，都需要卸载重装MCP，暂时没找到更优解。
 
 ---
 
