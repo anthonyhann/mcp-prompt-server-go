@@ -1,168 +1,181 @@
 # MCP Prompt Server
 
-[English Version](README_EN.md)
+> 基于 Model Context Protocol (MCP) 的智能提示词服务器，支持一键集成到 Cursor、Windsurf 等编辑器，助力内容创作、代码开发、知识管理和AI自动化。
 
-这是一个基于Model Context Protocol (MCP)的服务器，用于根据用户任务需求提供预设的prompt模板，帮助Cline/Cursor/Windsurf...更高效地执行各种任务。服务器将预设的prompt作为工具(tools)返回，以便在Cursor和Windsurf等编辑器中更好地使用。
+---
 
-## 功能特点
+## 主要功能
 
-- 提供预设的prompt模板，可用于代码审查、API文档生成、代码重构等任务
-- 将所有prompt模板作为MCP工具(tools)提供，而非MCP prompts格式
-- 支持动态参数替换，使prompt模板更加灵活
-- 允许开发者自由添加和修改prompt模板
-- 提供工具API，可重新加载prompt和查询可用prompt
-- 专为Cursor和Windsurf等编辑器优化，提供更好的集成体验
+- 📦 **丰富的Prompt模板**：内置多种高质量Prompt，涵盖代码、写作、产品、知识卡片、网页生成、结构化总结等场景。
+- 🛠️ **即插即用的MCP工具**：所有Prompt自动注册为MCP工具，支持参数化调用，适配主流编辑器。
+- 🔄 **热加载与管理**：支持一键reload，无需重启即可加载新Prompt。
+- 🧩 **极易扩展**：只需添加YAML/JSON文件即可扩展新功能，无需改动主程序。
+- 🏷️ **支持多语言与多领域**：适合中英文内容、产品、教育、媒体、AI等多种应用。
+
+---
 
 ## 目录结构
 
 ```
-prompt-server/
-├── package.json         # 项目依赖和脚本
-├── src/                 # 源代码目录
-│   ├── index.js         # 服务器入口文件
-│   └── prompts/         # 预设prompt模板目录
-│       ├── code_review.yaml
-│       ├── api_documentation.yaml
-│       ├── code_refactoring.yaml
-│       ├── test_case_generator.yaml
-│       └── project_architecture.yaml
-└── README.md            # 项目说明文档
+mcp-prompt-server/
+├── package.json
+├── src/
+│   ├── index.js                # 服务器主入口
+│   └── prompts/                # 所有Prompt模板目录
+│       ├── gen_summarize.yaml
+│       ├── gen_title.yaml
+│       ├── gen_html_web_page.yaml
+│       ├── gen_3d_webpage_html.yaml
+│       ├── gen_bento_grid_html.yaml
+│       ├── gen_knowledge_card_html.yaml
+│       ├── gen_magazine_card_html.yaml
+│       ├── gen_prd_prototype_html.yaml
+│       ├── ...                # 更多Prompt模板
+│   └── 更多Prompt，需要时拿出来/ # 可选扩展Prompt
+└── README.md
 ```
 
-## 安装和使用
+---
 
-1. 安装依赖：
+## 快速开始
 
-```bash
-cd prompt-server
-npm install
-```
+1. **安装依赖**
 
-2. 启动服务器：
+   ```bash
+   npm install
+   ```
 
-```bash
-npm start
-```
+2. **启动服务器**
 
-服务器将在标准输入/输出上运行，可以被Cursor、Windsurf或其他MCP客户端连接。
+   ```bash
+   npm start
+   ```
 
-## 添加新的Prompt模板
+   启动后，MCP Prompt Server会自动加载`src/prompts/`目录下所有Prompt模板，并以MCP工具形式对外提供服务。
 
-您可以通过在`src/prompts`目录中添加新的YAML或JSON文件来创建新的prompt模板。每个模板文件应包含以下内容：
+---
 
-```yaml
-name: prompt_name                # 唯一标识符，用于调用此prompt
-description: prompt description  # 对prompt功能的描述
-arguments:                       # 参数列表（可选）
-  - name: arg_name               # 参数名称
-    description: arg description # 参数描述
-    required: true/false         # 是否必需
-messages:                        # prompt消息列表
-  - role: user/assistant         # 消息角色
-    content:
-      type: text                 # 内容类型
-      text: |                    # 文本内容，可包含参数占位符 {{arg_name}}
-        Your prompt text here...
-```
+## 如何使用
 
-添加新文件后，服务器会在下次启动时自动加载，或者您可以使用`reload_prompts`工具重新加载所有prompt。
+### 工具集成
 
-## 使用示例
+#### Cursor
 
-### 在Cursor或Windsurf中调用代码审查工具
+- 编辑 `~/.cursor/mcp_config.json`，添加如下内容（请将路径替换为你实际的项目路径）：
 
-```json
-{
-  "name": "code_review",
-  "arguments": {
-    "language": "javascript",
-    "code": "function add(a, b) { return a + b; }"
+  ```json
+  {
+    "servers": [
+      {
+        "name": "Prompt Server",
+        "command": "node",
+        "args": [
+          "/你的文件实际路径/mcp-prompt-server/src/index.js"
+        ],
+        "transport": "stdio"
+      }
+    ]
   }
-}
-```
+  ```
 
-### 在Cursor或Windsurf中调用API文档生成工具
+- 保存后重启Cursor，即可在工具面板中看到所有Prompt工具。
 
-```json
-{
-  "name": "api_documentation",
-  "arguments": {
-    "language": "python",
-    "code": "def process_data(data, options=None):\n    # 处理数据\n    return result",
-    "format": "markdown"
-  }
-}
-```
+#### Windsurf
 
-## 工具API
+- 编辑 `~/.codeium/windsurf/mcp_config.json`，添加：
 
-服务器提供以下管理工具：
-
-- `reload_prompts`: 重新加载所有预设的prompts
-- `get_prompt_names`: 获取所有可用的prompt名称
-
-此外，所有在`src/prompts`目录中定义的prompt模板都会作为工具提供给客户端。
-
-## 与编辑器集成
-
-### Cursor
-
-在Cursor中，您需要编辑MCP配置文件：
-
-1. 找到或创建Cursor的MCP配置文件（通常位于`~/.cursor/`目录）
-2. 添加以下内容：
-
-```json
-{
-  "servers": [
-    {
-      "name": "Prompt Server",
-      "command": ["node", "/path/to/prompt-server/src/index.js"],
-      "transport": "stdio",
-      "initialization_options": {}
-    }
-  ]
-}
-```
-
-请确保将`/path/to/prompt-server`替换为您实际的项目路径。
-
-3. 保存配置并重启编辑器
-4. 现在您应该能够在工具面板中看到所有可用的prompt工具
-
-### Windsurf
-
-在Windsurf中，通过以下方式访问MCP配置：
-
-1. 导航至 Windsurf - 设置 > 高级设置，或
-2. 使用命令面板 > 打开Windsurf设置页面
-3. 滚动到Cascade部分，您会看到添加新服务器的选项
-4. 点击"添加服务器"按钮，然后选择"添加自定义服务器+"
-5. 或者，您可以直接编辑`~/.codeium/windsurf/mcp_config.json`文件，添加以下内容：
-
-```json
-{
-  "mcpServers": {
-    "prompt-server": {
-      "command": "node",
-      "args": [
-        "/path/to/prompt-server/src/index.js"
-      ],
-      "transport": "stdio"
+  ```json
+  {
+    "mcpServers": {
+      "prompt-server": {
+        "command": "node",
+        "args": ["/path/to/mcp-prompt-server/src/index.js"],
+        "transport": "stdio"
+      }
     }
   }
-}
-```
+  ```
 
-请确保将`/path/to/prompt-server`替换为您实际的项目路径。
+- 刷新Windsurf设置，Prompt Server即刻生效。
 
-6. 添加服务器后，点击刷新按钮
-7. 现在您应该能够在工具面板中看到所有可用的prompt工具
+#### Raycast
 
-## 扩展建议
+1. 在 Raycast 搜索 `install server（MCP）`
 
-1. 添加更多专业领域的prompt模板
-2. 实现prompt版本控制
-3. 添加prompt分类和标签
-4. 实现prompt使用统计和分析
-5. 添加用户反馈机制
+   ![](https://img.t5t6.com/1747728547294-26c78178-6e42-4e02-a7f3-c9bd9cdbc1fe.png)
+
+2. 给MCP输入一个名字，建议简单点，方便以后@使用，比如叫 `prompt`
+3. Command 填写 `node`
+4. Argument 填写你的 `index.js` 路径地址
+
+   ![](https://img.t5t6.com/1747728622599-82551d14-937b-4e7c-9429-68d72b7036ce.png)
+
+5. 保存即可，Raycast会自动集成MCP Prompt Server。
+
+##### 注意事项
+- 未来新增Prompt，可以复制已有模版让AI参考生成YAML文件。
+- **模版中的 `arguments: []` 要么为空，要么参数设置为非必填（false），否则Raycast会报错。**
+- 如果报错，可以在Raycast中搜"manage server（MCP）"卸载后重装。
+- 每次新增Prompt，都需要卸载重装MCP，暂时没找到更优解。
+
+---
+
+## 如何扩展Prompt
+
+1. **新建YAML或JSON文件**，放入`src/prompts/`目录。
+2. **模板格式示例**：
+
+   ```yaml
+   name: your_prompt_name
+   description: 这个Prompt的用途说明
+   arguments: []
+   messages:
+     - role: user
+       content:
+         type: text
+         text: |
+           你的Prompt内容，支持参数占位符{{param}}
+   ```
+
+3. **热加载Prompt**  
+   - 在编辑器中调用`reload_prompts`工具，或重启服务器即可。
+
+---
+
+## 管理与调试
+
+- `reload_prompts`：热加载所有Prompt模板
+- `get_prompt_names`：获取当前所有可用Prompt名称
+
+---
+
+## 高级用法与扩展
+
+- 支持多轮对话Prompt、复杂参数、跨语言内容、数据可视化等高级场景
+- 可将`src/prompts/更多Prompt，需要时拿出来/`目录下的模板随时复制到主目录启用
+
+---
+
+## 常见问题
+
+- **Prompt未生效？**  
+  检查YAML格式、name字段唯一性，并reload或重启服务。
+- **参数不生效？**  
+  确认arguments字段正确，调用时传递参数名和值。
+
+---
+
+## 贡献与反馈
+
+- 欢迎提交新Prompt、优化建议或Bug反馈！
+- 联系作者：向阳乔木
+
+---
+
+## License
+
+MIT
+
+---
+
+如需进一步定制、批量生成Prompt或企业级集成，欢迎联系作者或提交Issue！
