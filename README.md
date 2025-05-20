@@ -157,6 +157,25 @@ mcp-prompt-server/
 
 - 刷新Windsurf设置，Prompt Server即刻生效。
 
+#### Trae
+
+- 编辑配置文件，添加：
+
+  ```json
+  {
+    "mcpServers": {
+      "Prompt Server": {
+        "command": "node",
+        "args": [
+          "/你的文件实际路径/mcp-prompt-server/src/index.js"
+        ]
+      }
+    }
+  }
+  ```
+
+- 保存配置后重启Trae即可使用。
+
 ---
 
 ## 如何扩展Prompt

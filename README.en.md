@@ -160,6 +160,25 @@ mcp-prompt-server/
 
 - Refresh Windsurf settings. Prompt Server will be available immediately.
 
+#### Trae
+
+- Edit the configuration file and add:
+
+  ```json
+  {
+    "mcpServers": {
+      "Prompt Server": {
+        "command": "node",
+        "args": [
+          "/your/actual/path/mcp-prompt-server/src/index.js"
+        ]
+      }
+    }
+  }
+  ```
+
+- Save and restart Trae to apply changes.
+
 ---
 
 ## How to Extend Prompts
