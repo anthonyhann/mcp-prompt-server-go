@@ -1,6 +1,46 @@
 # MCP Prompt Server
 
-> An intelligent prompt server based on Model Context Protocol (MCP), supporting one-click integration with editors like Cursor, Windsurf, and Raycast. Boost your content creation, code development, knowledge management, and AI automation.
+## Have You Experienced These Pain Points?
+
+Ever found yourself with a collection of prompts but struggling to remember when to use them?
+
+Tired of copying and pasting prompts every time you need them?
+
+Some people store prompts in AI programming tools' Rules, which solves part of the problem.
+
+But what if we could turn common prompts into MCP tools?
+
+By designing prompt templates as tools, we can invoke various prompts through natural language conversations.
+
+After searching online, I found a similar MCP project at:
+https://github.com/gdli6177/mcp-prompt-server
+
+I forked it and customized my commonly used prompts - the results are amazing!
+
+## The Magic of This MCP
+
+No more copying and pasting lengthy prompts.
+
+Just use natural language conversations to automatically:
+- Generate visualized web pages
+- Design PRDs
+- Create catchy titles
+- And much more...
+
+AI automatically finds and uses the appropriate prompt.
+
+Works with any MCP-supported tool like Raycast, Cursor, Windsurf, Cherrystudio, etc.
+
+**Example with Raycast**
+
+@prompt Design a product prototype and write a PRD
+
+![](https://img.t5t6.com/1747729312139-9472ed65-469e-46a6-b620-1187b089a0e3.png)
+
+You can even combine multiple MCP tools for complex workflows.
+
+Here's me asking AI to generate WeChat article titles based on content I'm browsing:
+![](https://img.t5t6.com/1747729449379-4a37c8ec-a1b6-4baa-b446-5782bdf4f82f.png)
 
 ---
 

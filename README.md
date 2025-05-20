@@ -1,6 +1,43 @@
 # MCP Prompt Server
 
-> 基于 Model Context Protocol (MCP) 的智能提示词服务器，支持一键集成到 Cursor、Windsurf 等编辑器，助力内容创作、代码开发、知识管理和AI自动化。
+## 不知道你有没有类似痛点
+
+积累了一大堆Prompt，但经常想不起来用。
+
+每次用都需要复制粘贴，非常繁琐。
+
+有人会放在AI编程工具的Rules中，可以解决一部分问题。
+
+但我想，是否可以把常用的Prompt也做成MCP。
+
+里面的一个个Prompt模版设计成tools，这样就能用自然语言对话就能调用各种Prompt。
+
+上网搜了下，果然已经有类似的MCP，原版地址
+
+https://github.com/gdli6177/mcp-prompt-server
+
+Fork了一份，把自己的常用Prompt改造一番，发现异常好用。
+
+## 这个MCP的神奇效果
+
+再也不需要复制粘贴大量提示词了。
+
+完全用自然语言对话，自动调用Prompt生成可视化网页，设计PRD，生成标题等等
+
+AI自动会找到合适的Prompt处理。
+
+可以安装在Raycast、Cursor、Windsurf、Cherrystudio等任意支持MCP的工具中。
+
+**Raycast 为例，演示效果**
+
+@prompt  让写设计个产品原型并写PRD
+
+![](https://img.t5t6.com/1747729312139-9472ed65-469e-46a6-b620-1187b089a0e3.png)
+
+甚至还能组个多个MCP工具，实现复杂工作流。
+
+我让AI基于我正在浏览的内容，生成微信公众号标题。
+![](https://img.t5t6.com/1747729449379-4a37c8ec-a1b6-4baa-b446-5782bdf4f82f.png)
 
 ---
 
