@@ -1,32 +1,32 @@
-# MCP Prompt Server (Go Version)
+# MCP Prompt Server (Go Edition)
 
-> 🚀 **Brand New Upgrade!** High-performance MCP Prompt Server rewritten in Golang, delivering better performance, enhanced stability, and richer features.
+> 🚀 **Brand New Upgrade!** High-performance MCP Prompt server rewritten in Golang, providing better performance, stronger stability, and richer features.
 
 ## ✨ New Feature Upgrades
 
 ### 🔥 Performance Optimization
 - **Faster Startup**: Compiled language with 80%+ startup speed improvement
-- **Lower Memory Usage**: 60% reduction in memory consumption, more stable for long-term operation
-- **Concurrent Processing**: Native high-concurrency support, multiple clients can use simultaneously without pressure
+- **Lower Memory**: 60% less memory usage, more stable for long-term operation
+- **Concurrent Processing**: Native high-concurrency support, handles multiple clients effortlessly
 
 ### 🛠️ Feature Enhancements
-- **Enhanced Hot Reload**: File monitoring with automatic reload, no manual restart required
+- **Enhanced Hot Reload**: Automatic file monitoring and reloading, no manual restart needed
 - **Error Handling**: Comprehensive error handling and logging
 - **Parameter Validation**: Strict parameter validation to avoid runtime errors
-- **Statistics Monitoring**: Built-in statistics to monitor prompt usage in real-time
+- **Statistics Monitoring**: Built-in statistics for real-time prompt usage tracking
 
 ### 🏗️ Architecture Optimization
 - **Modular Design**: Clear layered architecture, easy to extend and maintain
-- **Type Safety**: Strong type system to reduce runtime errors
-- **Concurrency Safety**: Thread-safe prompt management supporting multi-client access
+- **Type Safety**: Strong type system reduces runtime errors
+- **Concurrent Safety**: Thread-safe prompt management supporting multi-client access
 
 ---
 
 ## 📁 Project Structure
 
 ```
-mcp-prompt-server/
-├── main.go                    # Main program entry
+mcp-prompt-server-go/
+├── main.go                    # Main entry point
 ├── go.mod                     # Go module definition
 ├── Makefile                   # Build scripts
 ├── internal/                  # Internal packages
@@ -110,7 +110,7 @@ go run tools/test_mcp.go
    - **Arguments**: Leave empty
 
 ```bash
-# Get binary file path
+# Get binary path
 make build
 echo "$(pwd)/bin/mcp-prompt-server"
 ```
@@ -135,7 +135,7 @@ Edit `~/.codeium/windsurf/mcp_config.json`:
 {
   "mcpServers": {
     "prompt-server": {
-      "command": "/path/to/mcp-prompt-server/bin/mcp-prompt-server",
+      "command": "/path/to/mcp-prompt-server-go/bin/mcp-prompt-server",
       "transport": "stdio"
     }
   }
@@ -166,7 +166,7 @@ The server includes rich prompt templates:
 - **project_architecture**: Project architecture design
 - **api_documentation**: API documentation generator
 
-### 💻 Code-related
+### 💻 Code Related
 - **code_review**: Code review assistant
 - **code_refactoring**: Code refactoring suggestions
 - **test_case_generator**: Test case generator
@@ -190,12 +190,12 @@ Use the `get_prompt_names` tool to view:
 - File monitoring status
 
 ### 3. Error Handling
-- Automatically skip incorrectly formatted prompt files
+- Automatically skip malformed prompt files
 - Detailed error logging
 - Graceful error recovery mechanisms
 
 ### 4. Performance Optimization
-- Concurrency-safe prompt access
+- Concurrent-safe prompt access
 - Memory-efficient file monitoring
 - Fast JSON serialization
 
@@ -247,7 +247,7 @@ go run tools/test_mcp.go
 
 ### Release Packaging
 ```bash
-# Create production version
+# Create production build
 make build-prod
 
 # Create release package
@@ -285,9 +285,9 @@ make package
    ```
 
 ### Log Levels
-The program provides detailed log information:
+The program provides detailed logging:
 - `INFO`: Normal operation information
-- `WARNING`: Non-fatal errors (e.g., invalid prompt files)
+- `WARNING`: Non-fatal errors (like invalid prompt files)
 - `ERROR`: Serious errors
 
 ---
@@ -299,7 +299,7 @@ The program provides detailed log information:
 | Startup Time | ~2.5s | ~0.5s | 80%↑ |
 | Memory Usage | ~45MB | ~18MB | 60%↓ |
 | Concurrent Processing | Limited | Excellent | Significant |
-| File Monitoring | Basic | Efficient | More stable |
+| File Monitoring | Basic | Efficient | More Stable |
 | Prompt Count | 11 | 19 | 73%↑ |
 
 ---
@@ -307,13 +307,13 @@ The program provides detailed log information:
 ## 🤝 Contributing
 
 1. Fork the project
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
+2. Create feature branch: `git checkout -b feature/amazing-feature`
 3. Commit changes: `git commit -m 'Add amazing feature'`
 4. Push branch: `git push origin feature/amazing-feature`
 5. Submit Pull Request
 
 ### Development Standards
-- Follow Go code conventions
+- Follow Go coding standards
 - Add necessary comments
 - Write test cases
 - Update relevant documentation
@@ -323,10 +323,6 @@ The program provides detailed log information:
 ## 📄 License
 
 MIT License - See [LICENSE](LICENSE) file for details
-
----
-
-**💡 Tip**: If you like this project, please give it a ⭐️! Feel free to submit Issues or join discussions.
 
 ---
 
