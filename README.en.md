@@ -1,23 +1,23 @@
 # MCP Prompt Server (Go Version)
 
-> 🚀 **All-New Upgrade!** High-performance MCP Prompt server rewritten in Golang, providing better performance, stronger stability, and richer features.
+> 🚀 **Brand New Upgrade!** High-performance MCP Prompt Server rewritten in Golang, delivering better performance, enhanced stability, and richer features.
 
 ## ✨ New Feature Upgrades
 
 ### 🔥 Performance Optimization
-- **Faster Startup**: Go compiled language, 80%+ startup speed improvement
-- **Lower Memory**: 60% reduction in memory usage, more stable for long-term operation
+- **Faster Startup**: Compiled language with 80%+ startup speed improvement
+- **Lower Memory Usage**: 60% reduction in memory consumption, more stable for long-term operation
 - **Concurrent Processing**: Native high-concurrency support, multiple clients can use simultaneously without pressure
 
 ### 🛠️ Feature Enhancements
 - **Enhanced Hot Reload**: File monitoring with automatic reload, no manual restart required
 - **Error Handling**: Comprehensive error handling and logging
 - **Parameter Validation**: Strict parameter validation to avoid runtime errors
-- **Statistics Monitoring**: Built-in statistics functionality for real-time prompt usage monitoring
+- **Statistics Monitoring**: Built-in statistics to monitor prompt usage in real-time
 
 ### 🏗️ Architecture Optimization
 - **Modular Design**: Clear layered architecture, easy to extend and maintain
-- **Type Safety**: Strong type system reduces runtime errors
+- **Type Safety**: Strong type system to reduce runtime errors
 - **Concurrency Safety**: Thread-safe prompt management supporting multi-client access
 
 ---
@@ -43,7 +43,7 @@ mcp-prompt-server/
 │   ├── gen_html_web_page.yaml # Web page generation
 │   └── ...                   # More templates
 ├── tools/                     # Tools directory
-│   └── test_mcp.go           # Test tool
+│   └── test_mcp.go           # Test tools
 └── bin/                       # Build output directory
 ```
 
@@ -94,7 +94,7 @@ After startup, you should see output similar to:
 
 ### 4. Run Tests
 ```bash
-# Run built-in test tool
+# Run built-in test tools
 go run tools/test_mcp.go
 ```
 
@@ -106,7 +106,7 @@ go run tools/test_mcp.go
 1. Search for "install server (MCP)"
 2. Configuration:
    - **Name**: `prompt` 
-   - **Command**: Full path to Go binary file
+   - **Command**: Full path to Go binary
    - **Arguments**: Leave empty
 
 ```bash
@@ -119,13 +119,13 @@ echo "$(pwd)/bin/mcp-prompt-server"
 Edit `~/.cursor/mcp_config.json`:
 ```json
 {
-  "mcpServers": {
-    "Prompt Server": {
-        "command": "node",
-        "args": ["/path/to/mcp-prompt-server-go/bin/mcp-prompt-server"],
-        "transport": "stdio"
+  "servers": [
+    {
+      "name": "Prompt Server (Go)",
+      "command": "/path/to/mcp-prompt-server-go/bin/mcp-prompt-server",
+      "transport": "stdio"
     }
-  }
+  ]
 }
 ```
 
@@ -146,31 +146,31 @@ Edit `~/.codeium/windsurf/mcp_config.json`:
 
 ## 📝 Built-in Prompt Tools
 
-The server includes rich prompt templates, including:
+The server includes rich prompt templates:
 
 ### 🎨 Content Creation
-- **wechat_headline_generator**: WeChat article viral headline generator
+- **wechat_headline_generator**: WeChat viral headline generator
 - **gen_summarize**: Intelligent content summarization tool
 - **writing_assistant**: Writing assistant
 - **gen_podcast_script**: Podcast script generator
 
-### 🌐 Web Page Generation
+### 🌐 Web Generation
 - **gen_html_web_page**: Universal web page generator
 - **gen_3d_webpage_html**: 3D effect web page generator
 - **gen_bento_grid_html**: Bento Grid layout web page
 - **gen_knowledge_card_html**: Knowledge card web page
-- **gen_magazine_card_html**: Magazine-style card
+- **gen_magazine_card_html**: Magazine-style cards
 
 ### 💼 Product Development
 - **gen_prd_prototype_html**: PRD prototype generator
 - **project_architecture**: Project architecture design
 - **api_documentation**: API documentation generator
 
-### 💻 Code-Related
+### 💻 Code-related
 - **code_review**: Code review assistant
 - **code_refactoring**: Code refactoring suggestions
 - **test_case_generator**: Test case generator
-- **build_mcp_server**: MCP server build assistant
+- **build_mcp_server**: MCP server builder assistant
 
 ### 🛠️ Management Tools
 - **reload_prompts**: Reload all prompts
@@ -209,7 +209,7 @@ Use the `get_prompt_names` tool to view:
 
 ```yaml
 name: my_new_prompt
-description: This is a description of the new prompt
+description: This is a new prompt description
 arguments:
   - name: input_text
     description: Input text
@@ -298,7 +298,7 @@ The program provides detailed log information:
 |---------|----------------|------------|-------------|
 | Startup Time | ~2.5s | ~0.5s | 80%↑ |
 | Memory Usage | ~45MB | ~18MB | 60%↓ |
-| Concurrent Processing | Limited | Excellent | Significant improvement |
+| Concurrent Processing | Limited | Excellent | Significant |
 | File Monitoring | Basic | Efficient | More stable |
 | Prompt Count | 11 | 19 | 73%↑ |
 
@@ -326,12 +326,15 @@ MIT License - See [LICENSE](LICENSE) file for details
 
 ---
 
-## 🙏 Acknowledgments
-
-- Original Node.js version: [gdli6177/mcp-prompt-server](https://github.com/gdli6177/mcp-prompt-server)
-- Model Context Protocol (MCP)
-- All contributors and user feedback
+**💡 Tip**: If you like this project, please give it a ⭐️! Feel free to submit Issues or join discussions.
 
 ---
 
-**💡 Tip**: If you like this project, please give it a ⭐️! Feel free to submit Issues or join discussions if you have any questions. 
+## 🙏 Acknowledgments
+
+- Original Node.js version: [gdli6177/mcp-prompt-server](https://github.com/gdli6177/mcp-prompt-server)
+- Upgraded Node.js version: [joesseesun/mcp-prompt-server](https://github.com/joeseesun/mcp-prompt-server)
+- Model Context Protocol (MCP)
+- All contributors and user feedback
+
+**💡 Tip**: If you like this project, please give it a ⭐️! Feel free to submit Issues or join discussions. 
