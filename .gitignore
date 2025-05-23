@@ -1,50 +1,59 @@
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
+# Golang
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 
-# Testing
-coverage/
+# Test binary, built with `go test -c`
+*.test
 
-# Production
-build/
+# Output of the go compiler
+*.o
+*.a
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# Build output
+bin/
 dist/
 
-# Misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
-logs
+# Runtime
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 
-# Editor directories and files
-.idea/
+# Coverage
+coverage.out
+coverage.html
+
+# IDE
 .vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.idea/
+*.swp
+*.swo
+*~
 
-# Optional npm cache directory
-.npm
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Optional eslint cache
-.eslintcache
+# Temporary files
+*.tmp
+*.temp
 
-# Optional REPL history
-.node_repl_history
+# Environment variables
+.env
+.env.local
+.env.*.local
 
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
+# MCP config (might contain sensitive paths)
+mcp_config.json 
