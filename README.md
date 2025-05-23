@@ -186,6 +186,50 @@ echo "$(pwd)/bin/mcp-prompt-server"
 ### 🛠️ 管理工具
 - **reload_prompts**: 重新加载所有prompts
 - **get_prompt_names**: 获取所有可用prompt名称
+  - 📋 **功能**: 实时返回当前加载的所有prompt工具名称列表
+  - 🔧 **参数**: 无需任何参数
+  - 📊 **返回**: 格式化的prompt列表，包含总数统计
+  - 🚀 **特点**: 并发安全、热重载支持、实时数据
+  - 💡 **用途**: 开发调试、工具发现、统计监控、集成测试
+
+#### get_prompt_names 使用示例
+
+**客户端调用方式**：
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "get_prompt_names",
+    "arguments": {}
+  }
+}
+```
+
+**返回结果示例**：
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "content": [{
+      "type": "text",
+      "text": "可用的prompts (19):\n- gen_html_web_page\n- writing_assistant\n- code_review\n- ..."
+    }]
+  }
+}
+```
+
+**快速测试命令**：
+```bash
+# 测试get_prompt_names功能
+./test_get_prompt_names.sh
+
+# 或者直接调用
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_prompt_names","arguments":{}}}' | ./bin/mcp-prompt-server
+```
 
 ---
 
