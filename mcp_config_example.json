@@ -1,11 +1,9 @@
 {
-  "mcpServers": {
-    "prompt-server": {
-      "command": "node",
-      "args": [
-        "/your-mcp-path/prompt-server/src/index.js"
-      ],
-      "env": {}
+  "servers": [
+    {
+      "name": "Prompt Server",
+      "command": "/path/to/mcp-prompt-server/bin/mcp-prompt-server",
+      "transport": "stdio"
     }
-  }
+  ]
 }
