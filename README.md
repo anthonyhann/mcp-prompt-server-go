@@ -1,382 +1,154 @@
-# MCP Prompt Server (Go版本)
+<div align="center">
 
-> 🚀 **全新升级！** 使用Golang重写的高性能MCP Prompt服务器，提供更好的性能、更强的稳定性和更丰富的功能。
+# 🧩 mcp-prompt-server-go
 
-## ✨ 新特性升级
+### Your prompt library, served as MCP tools — hot-reloaded, version-controlled, yours.
 
-### 🔥 性能优化
-- **更快启动**：Go编译型语言，启动速度提升80%+
-- **更低内存**：内存占用减少60%，长期运行更稳定
-- **并发处理**：原生支持高并发，多个客户端同时使用无压力
+A single-binary [Model Context Protocol](https://modelcontextprotocol.io) server written in Go: every YAML/JSON file in `prompts/` becomes a callable MCP tool. 19 ready-made templates + 2 management tools, 1,021 lines of Go, 2 direct dependencies. Edit a file, the server reloads — no restart, no redeploy.
 
-### 🛠️ 功能增强
-- **热重载增强**：文件监控自动重载，无需手动重启
-- **错误处理**：完善的错误处理和日志记录
-- **参数验证**：严格的参数校验，避免运行时错误
-- **统计监控**：内置统计功能，实时查看prompt使用情况
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Go](https://img.shields.io/badge/Go-1.21+-00ADD8.svg?style=flat-square)](go.mod)
+[![Transport](https://img.shields.io/badge/MCP-stdio-blueviolet.svg?style=flat-square)](#-client-setup)
+[![Prompts](https://img.shields.io/badge/prompts-19-green.svg?style=flat-square)](prompts/)
+[![Deps](https://img.shields.io/badge/direct_deps-2-orange.svg?style=flat-square)](go.mod)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](../../pulls)
 
-### 🏗️ 架构优化
-- **模块化设计**：清晰的分层架构，易于扩展和维护
-- **类型安全**：强类型系统，减少运行时错误
-- **并发安全**：线程安全的prompt管理，支持多客户端访问
+[Quickstart](#-quickstart) · [Prompts](#-built-in-prompts) · [Client setup](#-client-setup) · [中文](README_zh.md)
 
----
+</div>
 
-## 🙏 致谢
+## Your best prompt is stuck in a chat box
 
-- 原始Node.js版本：[gdli6177/mcp-prompt-server](https://github.com/gdli6177/mcp-prompt-server)
-- 升级Node.js版本：[joesseesun/mcp-prompt-server](https://github.com/joeseesun/mcp-prompt-server)
-- Model Context Protocol (MCP) 协议
-- 所有贡献者和用户的反馈
+- You wrote a killer code-review prompt once. Now it's buried in a conversation from March.
+- You paste the same 500-word instruction into Cursor, then Raycast, then wherever — and they drift apart.
+- You tweak a prompt, restart the client, lose your place, repeat.
 
-**💡 提示**：如果你喜欢这个项目，请给个⭐️支持一下！有问题欢迎提Issue或加入讨论。
+This server makes prompts **files**: diffable, versionable, shareable — and callable from any MCP client.
 
----
+```text
+$ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call",
+          "params":{"name":"get_prompt_names","arguments":{}}}' | ./bin/mcp-prompt-server
 
-## 📁 项目结构
-
-```
-mcp-prompt-server-go/
-├── main.go                    # 主程序入口
-├── go.mod                     # Go模块定义
-├── Makefile                   # 构建脚本
-├── internal/                  # 内部包
-│   ├── mcp/                   # MCP协议实现
-│   │   └── models.go          # MCP数据模型
-│   ├── prompt/                # Prompt管理
-│   │   ├── models.go          # Prompt数据模型
-│   │   └── manager.go         # Prompt管理器
-│   └── server/                # 服务器实现
-│       └── stdio.go           # 标准输入输出服务器
-├── prompts/                   # Prompt模板目录
-│   ├── gen_title.yaml         # 标题生成
-│   ├── gen_summarize.yaml     # 内容总结
-│   ├── gen_html_web_page.yaml # 网页生成
-│   └── ...                   # 更多模板
-├── tools/                     # 工具目录
-│   └── test_mcp.go           # 测试工具
-└── bin/                       # 构建输出目录
+"可用的prompts (19):
+- code_review
+- gen_html_web_page
+- writing_assistant
+- ..."
 ```
 
----
+> 21 tools on first boot: 19 prompt templates from `prompts/` + `reload_prompts` + `get_prompt_names`.
 
-## 🚀 快速开始
+## ✨ What it does
 
-### 1. 环境要求
-- Go 1.21+ 
-- Make (可选，用于便捷构建)
+| You do | It does |
+|---|---|
+| Drop `my_prompt.yaml` into `prompts/` | Registers `my_prompt` as an MCP tool with typed arguments — instantly, via fsnotify hot reload |
+| Call the tool from any MCP client | Renders `{{arg}}` placeholders with your arguments, returns the final prompt text |
+| Save a broken YAML by accident | Skips it with a warning, keeps serving the other 18 — no crash |
+| Run many clients at once | RWMutex-guarded manager; concurrent reads are safe |
+| Ask `get_prompt_names` | Live list of what's loaded, for debugging and discovery |
 
-### 2. 安装运行
+**Deliberately boring:** stdio transport, JSON-RPC, no daemon, no database, no network. `ps` shows one process; `kill` is the off switch.
 
-#### 方式一：使用Make（推荐）
-```bash
-# 安装依赖并构建
-make build
+## 🚀 Quickstart
 
-# 运行服务器
-make run
-
-# 开发模式（自动重载）
-make dev
-```
-
-#### 方式二：直接使用Go命令
-```bash
-# 安装依赖
-go mod tidy
-
-# 构建
-go build -o bin/mcp-prompt-server main.go
-
-# 运行
-./bin/mcp-prompt-server
-```
-
-### 3. 验证安装
-启动后你应该看到类似输出：
-```
-2024/01/15 10:30:00 Successfully loaded 19 prompts from /path/to/prompts
-2024/01/15 10:30:00 Registered 19 prompt tools
-2024/01/15 10:30:00 Registered management tools: reload_prompts, get_prompt_names
-2024/01/15 10:30:00 Started file watching for /path/to/prompts
-2024/01/15 10:30:00 Starting MCP Prompt Server v2.0.0...
-2024/01/15 10:30:00 MCP Prompt Server is running on stdio...
-```
-
-### 4. 运行测试
-```bash
-# 运行内置测试工具
-go run tools/test_mcp.go
-```
-
----
-
-## 🔧 客户端集成
-
-### Raycast
-1. 搜索 "install server（MCP）"
-2. 配置信息：
-   - **Name**: `prompt` 
-   - **Command**: Go二进制文件的完整路径
-   - **Arguments**: 留空
+**1. Build** (Go 1.21+)
 
 ```bash
-# 获取二进制文件路径
-make build
-echo "$(pwd)/bin/mcp-prompt-server"
+git clone https://github.com/anthonyhann/mcp-prompt-server-go
+cd mcp-prompt-server-go && make build
 ```
 
-### Cursor
-编辑 `~/.cursor/mcp_config.json`：
-```json
-{
-  "mcpServers": {
-    "Prompt Server": {
-        "command": "node",
-        "args": ["/path/to/mcp-prompt-server-go/bin/mcp-prompt-server"],
-        "transport": "stdio"
-    }
-  }
-}
-```
+**2. Register** the binary as a stdio MCP server in your client (full configs below).
 
-### Windsurf
-编辑 `~/.codeium/windsurf/mcp_config.json`：
+**3. Call** any prompt by name — e.g. `code_review` with `{"code": "..."}`.
+
+**For AI Agents** — paste this to your agent:
+
+> Clone https://github.com/anthonyhann/mcp-prompt-server-go, run `make build`, then register `<repo>/bin/mcp-prompt-server` as a stdio MCP server in my client config, and verify with the `get_prompt_names` tool.
+
+## 🔌 Client setup
+
+**Cursor** — `~/.cursor/mcp_config.json`:
+
 ```json
 {
   "mcpServers": {
     "prompt-server": {
-      "command": "/path/to/mcp-prompt-server/bin/mcp-prompt-server",
-      "transport": "stdio"
+      "command": "/absolute/path/to/mcp-prompt-server-go/bin/mcp-prompt-server"
     }
   }
 }
 ```
 
----
+**Windsurf** — `~/.codeium/windsurf/mcp_config.json`: same shape.
 
-## 📝 内置Prompt工具
+**Raycast** — "Install Server (MCP)": Name `prompt`, Command = absolute binary path, no arguments.
 
-服务器内置了丰富的Prompt模板，包括：
+Verify any setup:
 
-### 🎨 内容创作
-- **wechat_headline_generator**: 微信公众号爆款标题生成器
-- **gen_summarize**: 智能内容总结工具
-- **writing_assistant**: 写作助手
-- **gen_podcast_script**: 播客脚本生成器
-
-### 🌐 网页生成
-- **gen_html_web_page**: 通用网页生成器
-- **gen_3d_webpage_html**: 3D效果网页生成器
-- **gen_bento_grid_html**: Bento Grid布局网页
-- **gen_knowledge_card_html**: 知识卡片网页
-- **gen_magazine_card_html**: 杂志风格卡片
-
-### 💼 产品开发
-- **gen_prd_prototype_html**: PRD原型生成器
-- **project_architecture**: 项目架构设计
-- **api_documentation**: API文档生成器
-
-### 💻 代码相关
-- **code_review**: 代码审查助手
-- **code_refactoring**: 代码重构建议
-- **test_case_generator**: 测试用例生成器
-- **build_mcp_server**: MCP服务器构建助手
-
-### 🛠️ 管理工具
-- **reload_prompts**: 重新加载所有prompts
-- **get_prompt_names**: 获取所有可用prompt名称
-  - 📋 **功能**: 实时返回当前加载的所有prompt工具名称列表
-  - 🔧 **参数**: 无需任何参数
-  - 📊 **返回**: 格式化的prompt列表，包含总数统计
-  - 🚀 **特点**: 并发安全、热重载支持、实时数据
-  - 💡 **用途**: 开发调试、工具发现、统计监控、集成测试
-
-#### get_prompt_names 使用示例
-
-**客户端调用方式**：
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/call",
-  "params": {
-    "name": "get_prompt_names",
-    "arguments": {}
-  }
-}
-```
-
-**返回结果示例**：
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "result": {
-    "content": [{
-      "type": "text",
-      "text": "可用的prompts (19):\n- gen_html_web_page\n- writing_assistant\n- code_review\n- ..."
-    }]
-  }
-}
-```
-
-**快速测试命令**：
 ```bash
-# 测试get_prompt_names功能
-./test_get_prompt_names.sh
-
-# 或者直接调用
-echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{}}}
-{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_prompt_names","arguments":{}}}' | ./bin/mcp-prompt-server
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./bin/mcp-prompt-server
 ```
 
----
+## 📚 Built-in prompts
 
-## ⚡ 高级功能
+19 templates in 5 families — starting points, meant to be edited in place:
 
-### 1. 热重载
-修改prompts目录下的任何YAML/JSON文件，服务器会自动检测并重新加载，无需重启。
+| Family | Prompts |
+|---|---|
+| Content | `gen_title` · `gen_mimeng_headline_title` · `gen_summarize` · `writing_assistant` · `gen_podcast_script` |
+| Web pages | `gen_html_web_page` · `gen_3d_webpage_html` · `gen_3d_edu_webpage_html` · `gen_bento_grid_html` · `gen_knowledge_card_html` · `gen_magazine_card_html` |
+| Product | `gen_prd_prototype_html` · `project_architecture` · `api_documentation` |
+| Code | `code_review` · `code_refactoring` · `test_case_generator` · `build_mcp_server` |
+| Meta | `prompt_template_generator` |
 
-### 2. 统计监控
-使用 `get_prompt_names` 工具查看：
-- 已加载的prompt数量
-- 参数分布统计
-- 文件监控状态
-
-### 3. 错误处理
-- 自动跳过格式错误的prompt文件
-- 详细的错误日志记录
-- 优雅的错误恢复机制
-
-### 4. 性能优化
-- 并发安全的prompt访问
-- 内存高效的文件监控
-- 快速的JSON序列化
-
----
-
-## 📝 开发指南
-
-### 添加新Prompt
-1. 在 `prompts/` 目录创建新的YAML/JSON文件
-2. 使用以下格式：
+Your own template is a YAML file away:
 
 ```yaml
-name: my_new_prompt
-description: 这是一个新的prompt描述
+name: my_prompt
+description: What it does
 arguments:
   - name: input_text
-    description: 输入文本
-    required: false
-    type: string
+    description: The input
+    required: true
 messages:
   - role: user
     content:
       type: text
-      text: |
-        请处理以下内容：{{input_text}}
-        
-        输出格式：...
+      text: "Process this: {{input_text}}"
 ```
 
-3. 保存文件，服务器会自动重载
+Save → the file watcher reloads → the tool is live.
 
-### 构建和测试
-```bash
-# 代码格式化
-make fmt
+## 📁 Repository layout
 
-# 静态分析
-make vet
-
-# 运行测试
-make test
-
-# 测试覆盖率
-make test-coverage
-
-# 运行MCP测试
-go run tools/test_mcp.go
+```text
+mcp-prompt-server-go/
+├── main.go              # Entry: load prompts → register tools → serve stdio
+├── internal/
+│   ├── mcp/             # MCP protocol models
+│   ├── prompt/          # Template models + manager (fsnotify hot reload, RWMutex)
+│   └── server/          # stdio JSON-RPC server
+├── prompts/             # 19 built-in YAML templates (edit these!)
+├── tools/test_mcp.go    # Manual test harness
+├── Makefile             # build / dev / test / package
+└── GUIDE.md · UPGRADE.md
 ```
 
-### 发布打包
-```bash
-# 创建生产版本
-make build-prod
+## ⚠️ When NOT to use it
 
-# 创建发布包
-make package
-```
+- **You want a prompt marketplace.** This serves *your* files; the 19 built-ins are a starter kit, not a feed.
+- **You need remote access.** stdio only — no HTTP/SSE, no auth, no multi-tenancy. One user, one machine.
+- **Your client only supports the MCP `prompts` capability.** This server exposes prompts as **tools** (`tools/call`), which every major client supports — but know the difference.
+- **You need prompt chaining/workflows.** `{{var}}` substitution is the whole templating engine, on purpose.
 
----
+## 🙋 Why it exists
 
-## 🔍 故障排除
+The Node.js original ([gdli6177/mcp-prompt-server](https://github.com/gdli6177/mcp-prompt-server)) proved the idea; I wanted the same thing as one static binary I could drop anywhere without a runtime. So: 1,021 lines of Go, 2 direct deps, `make build` → done. I run it daily; every built-in prompt here survived real use.
 
-### 常见问题
+⭐ If it saves you one copy-paste a day, a star tells me to keep the templates coming.
 
-1. **启动失败**
-   ```bash
-   # 检查Go版本
-   go version
-   
-   # 重新构建
-   make clean && make build
-   ```
+## License
 
-2. **Prompt未加载**
-   ```bash
-   # 检查文件格式
-   yaml语法验证器检查YAML文件
-   
-   # 查看日志
-   ./bin/mcp-prompt-server 2>&1 | grep -i warning
-   ```
-
-3. **客户端连接问题**
-   ```bash
-   # 测试服务器
-   echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./bin/mcp-prompt-server
-   ```
-
-### 日志级别
-程序提供详细的日志信息：
-- `INFO`: 正常操作信息
-- `WARNING`: 非致命错误（如无效prompt文件）
-- `ERROR`: 严重错误
-
----
-
-## 📊 性能对比
-
-| 特性 | Node.js版本 | Go版本 | 提升 |
-|------|-------------|---------|------|
-| 启动时间 | ~2.5s | ~0.5s | 80%↑ |
-| 内存占用 | ~45MB | ~18MB | 60%↓ |
-| 并发处理 | 有限 | 优秀 | 显著提升 |
-| 文件监控 | 基础 | 高效 | 更稳定 |
-| Prompt数量 | 11个 | 19个 | 73%↑ |
-
----
-
-## 🤝 贡献指南
-
-1. Fork项目
-2. 创建功能分支: `git checkout -b feature/amazing-feature`
-3. 提交更改: `git commit -m 'Add amazing feature'`
-4. 推送分支: `git push origin feature/amazing-feature`
-5. 提交Pull Request
-
-### 开发规范
-- 遵循Go代码规范
-- 添加必要的注释
-- 编写测试用例
-- 更新相关文档
-
----
-
-## 📄 许可证
-
-MIT License - 详见 [LICENSE](LICENSE) 文件
-
----------------------------------------------------------------------
+[MIT](LICENSE) © 2026 anthonyhann — protocol: [Model Context Protocol](https://modelcontextprotocol.io). Hat tip to the Node.js originals that inspired this rewrite.

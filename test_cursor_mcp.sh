@@ -4,8 +4,9 @@ echo "🧪 测试Cursor MCP连接状态"
 echo "================================"
 
 # 测试1: 验证二进制文件存在
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "📁 检查MCP服务器二进制文件..."
-if [ -f "/Users/user/www/mcp-prompt-server-go/bin/mcp-prompt-server" ]; then
+if [ -f "$SCRIPT_DIR/bin/mcp-prompt-server" ]; then
     echo "✅ MCP服务器二进制文件存在"
 else
     echo "❌ MCP服务器二进制文件不存在"
@@ -25,7 +26,7 @@ fi
 
 # 测试3: 测试MCP服务器响应
 echo "🔄 测试MCP服务器响应..."
-cd /Users/user/www/mcp-prompt-server-go
+cd "$SCRIPT_DIR"
 echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./bin/mcp-prompt-server > /tmp/mcp_test.json 2>/dev/null
 
 if [ $? -eq 0 ]; then
