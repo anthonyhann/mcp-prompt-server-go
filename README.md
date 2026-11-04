@@ -152,3 +152,15 @@ The Node.js original ([gdli6177/mcp-prompt-server](https://github.com/gdli6177/m
 ## License
 
 [MIT](LICENSE) © 2026 anthonyhann — protocol: [Model Context Protocol](https://modelcontextprotocol.io). Hat tip to the Node.js originals that inspired this rewrite.
+
+## 许可与署名（非代码内容）
+
+代码沿用仓库根目录 `LICENSE` 中的原有许可；**非代码内容**（文档、图片、示意图、数据、提示词与示例文本等）采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh-hans)，完整条款见 [`LICENSE-CC-BY-4.0`](LICENSE-CC-BY-4.0)。
+
+转载、引用或改编非代码内容时，必须署名并注明是否做过修改：
+
+> 来源：mcp-prompt-server-go · 作者 anthonyhann · https://github.com/anthonyhann/mcp-prompt-server-go · CC BY 4.0
+
+---
+
+**License & attribution (non-code content).** Code follows the existing `LICENSE` at the repository root. All **non-code content** (documentation, images, diagrams, data, prompts and sample text) is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); full terms in [`LICENSE-CC-BY-4.0`](LICENSE-CC-BY-4.0). Reuse must credit the source above and state whether changes were made.
